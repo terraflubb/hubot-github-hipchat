@@ -24,8 +24,7 @@ module.exports = (robot) ->
     payload = req.body
     eventType = req.headers["x-github-event"]
     response = handleEvent(eventType, payload)
-
-    robot.messageRoom("hubot", response) if response?
+    robot.messageRoom(NOTIFICATION_ROOM, response) if response?
 
     res.send 'OK'
 

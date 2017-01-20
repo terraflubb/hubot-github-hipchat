@@ -6,6 +6,7 @@ request = require('request')
 fixtures = require("./fixtures/github-request-fixtures.coffee")
 
 process.env.EXPRESS_PORT = 9999
+BOT_NAME = 'hubot'
 
 describe 'gh-notifier', ->
 
@@ -17,38 +18,35 @@ describe 'gh-notifier', ->
 
   it 'handles a "pull request opened" notification', (done) ->
     request.post mockGithubRequest('pull_request', 'opened'), (res, req) =>
-      expect(@room.messages).to.eql([
-        [
-          'hubot'
-          'nedap/science: terraflubb opened PR #1: ' +
-          '"This is the title of the pull request"'
-        ]
-      ])
+      expect(@room.messages).to.eql( hubotResponse(
+        'nedap/science: terraflubb opened PR #1: ' +
+        '"This is the title of the pull request"'
+      ))
       done()
 
   it 'handles a "pull request closed (merged)" notification', (done) ->
     payload = mockGithubRequest('pull_request', 'closed')
     payload.json.pull_request.merged = true
     request.post payload, (res, req) =>
-      expect(@room.messages).to.eql([
-        ['hubot', 'nedap/science: terraflubb merged PR #1.']
-      ])
+      expect(@room.messages).to.eql(hubotResponse(
+        'nedap/science: terraflubb merged PR #1.'
+      ))
       done()
 
   it 'handles a "pull request closed (unmerged)" notification', (done) ->
     payload = mockGithubRequest('pull_request', 'closed')
     payload.json.pull_request.merged = false
     request.post payload, (res, req) =>
-      expect(@room.messages).to.eql([
-        ['hubot', 'nedap/science: terraflubb closed PR #1.']
-      ])
+      expect(@room.messages).to.eql(hubotResponse(
+        'nedap/science: terraflubb closed PR #1.'
+      ))
       done()
 
   it 'handles a "issue opened" notification', (done) ->
     request.post mockGithubRequest('issues', 'opened'), (res, req) =>
       expect(@room.messages).to.eql([
         [
-          'hubot'
+          BOT_NAME
           'nedap/science: terraflubb created issue #1: ' +
           '"This is the title of the issue"'
         ]
@@ -57,26 +55,25 @@ describe 'gh-notifier', ->
 
   it 'handles a "issue comment created" notification', (done) ->
     request.post mockGithubRequest('issue_comment', 'created'), (res, req) =>
-      expect(@room.messages).to.eql([
-        ['hubot', 'nedap/science: terraflubb commented on issue #1']
-      ])
+      expect(@room.messages).to.eql(hubotResponse(
+        'nedap/science: terraflubb commented on issue #1'
+      ))
       done()
 
   it 'handles a "issue comment created" notification (for PR)', (done) ->
     payload = mockGithubRequest('issue_comment', 'created')
     payload.json.issue.pull_request = {lol: "bogus_pr!!!"}
     request.post payload, (res, req) =>
-      expect(@room.messages).to.eql([
-        ['hubot', 'nedap/science: terraflubb commented on PR #1']
-      ])
+      expect(@room.messages).to.eql(hubotResponse(
+        'nedap/science: terraflubb commented on PR #1'
+      ))
       done()
 
   it 'can deal with a ping', (done) ->
     request.post {
       method: 'POST'
-      headers: {
+      headers:
         'X-GitHub-Event': 'ping'
-      }
       uri: 'http://127.0.0.1:9999/hubot/github-events'
       json:
         zen: "banana"
@@ -141,3 +138,5 @@ getPayloadFor = (eventType, action) ->
       comment:
         user: fixtures.createUser()
     }
+
+hubotResponse = (expected) -> [[ BOT_NAME, expected ]]
