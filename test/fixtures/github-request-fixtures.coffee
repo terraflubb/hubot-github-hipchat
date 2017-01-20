@@ -1,12 +1,12 @@
 createRepository = ->
- JSON.parse(JSON.stringify({
+  {
     "id": 35129377,
     "name": "science",
     "full_name": "nedap/science"
-  }))
+  }
 
 createUser = ->
- JSON.parse(JSON.stringify({
+ {
     "login": "terraflubb",
     "id": 6752317,
     "avatar_url": "https://avatars.githubusercontent.com/u/6752317?v=3",
@@ -24,7 +24,8 @@ createUser = ->
     "received_events_url": "https://api.github.com/users/terraflubb/received_events",
     "type": "User",
     "site_admin": false
-  }))
+  }
+
 
 module.exports = {
   createUser: createUser,
