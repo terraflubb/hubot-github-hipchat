@@ -1,5 +1,5 @@
-module.exports = {
-  pull_request: {
+module.exports =
+  pull_request:
     opened: (payload) ->
       user = payload.pull_request.user.login
       pr_number = payload.number
@@ -7,6 +7,7 @@ module.exports = {
       repo = payload.repository.full_name
 
       "#{repo}: #{user} opened PR ##{pr_number}: \"#{title}\""
+
     closed: (payload) ->
       user = payload.pull_request.user.login
       pr_number = payload.number
@@ -15,8 +16,8 @@ module.exports = {
       verb = if payload.pull_request.merged then 'merged' else 'closed'
 
       "#{repo}: #{user} #{verb} PR ##{pr_number}."
-  },
-  issues: {
+
+  issues:
     opened: (payload) ->
       user = payload.issue.user.login
       number = payload.issue.number
@@ -24,8 +25,8 @@ module.exports = {
       repo = payload.repository.full_name
 
       "#{repo}: #{user} created issue ##{number}: \"#{title}\""
-  },
-  issue_comment: {
+
+  issue_comment:
     created: (payload) ->
       user = payload.comment.user.login
       number = payload.issue.number
@@ -33,5 +34,3 @@ module.exports = {
       noun = if payload.issue.pull_request? then 'PR' else 'issue'
 
       "#{repo}: #{user} commented on #{noun} ##{number}"
-  }
-}
