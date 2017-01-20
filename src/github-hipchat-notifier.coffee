@@ -2,7 +2,7 @@
 #   Listens to github notifications and reports them
 #
 # Configuration:
-#   GIT_NOTIFICATION_ROOM (the room we announce to)
+#   HUBOT_HIPCHAT_GITHUB_NOTIFICATION_ROOM (the room we announce to)
 #
 # Commands:
 #   hubot <trigger> - <what the respond trigger does>
@@ -14,9 +14,9 @@
 # Author:
 #   SteppingStone
 
-NOTIFICATION_ROOM = process.env['GIT_NOTIFICATION_ROOM']
+NOTIFICATION_ROOM = process.env.HUBOT_HIPCHAT_GITHUB_NOTIFICATION_ROOM or ''
 
-issueHandlers = require("./issueHandlers.coffee")
+eventHandlers = require("./handlers/events.coffee")
 
 module.exports = (robot) ->
 
@@ -33,6 +33,6 @@ module.exports = (robot) ->
 handleEvent = (eventType, payload) ->
   return null if eventType is "ping"
 
-  handler = issueHandlers[eventType][payload.action]
+  handler = eventHandlers[eventType][payload.action]
   return handler payload if handler?
   console.log "Cannot handle event: #{eventType}::#{payload.action}"
