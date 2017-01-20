@@ -21,13 +21,16 @@ module.exports = function (grunt) {
     watch: {
       files: ['Gruntfile.js', 'src/**/*.coffee', 'test/**/*.coffee'],
       tasks: ['test']
+    },
+    coffeelint: {
+      app: ['src/**/*.coffee', 'test/**/*.coffee']
     }
   });
 
   // load all grunt tasks
   require('matchdep').filterDev(['grunt-*', '!grunt-cli']).forEach(grunt.loadNpmTasks);
 
-  grunt.registerTask('test', ['mochaTest']);
+  grunt.registerTask('test', ['coffeelint', 'mochaTest']);
   grunt.registerTask('test:watch', ['watch']);
   grunt.registerTask('default', ['test']);
 };
