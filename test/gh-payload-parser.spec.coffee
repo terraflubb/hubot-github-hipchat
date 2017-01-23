@@ -4,14 +4,17 @@ fixtures = require("./fixtures/github-request-fixtures.coffee")
 parser = require("../src/notifications/github_payload_parser.coffee")
 
 describe 'Payload Parser', ->
+  beforeEach ->
+    @raw = repository: fixtures.createRepository()
+
+  it "should map the repository name to a handy accessor", ->
+    payload = parser(@raw)
+    expect(payload.repo).to.eql(@raw.repository.full_name)
 
   context 'which contain a pull request', ->
     beforeEach ->
-      @raw =
-        action: 'opened'
-        number: 1
-        repository: fixtures.createRepository()
-        pull_request: fixtures.createPR()
+      @raw.action = 'opened'
+      @raw.pull_request = fixtures.createPR()
       @payload = parser(@raw)
 
     it 'assigns its creator\'s login to who', ->
@@ -22,11 +25,8 @@ describe 'Payload Parser', ->
 
   context 'which contain an issue', ->
     beforeEach ->
-      @raw =
-        action: 'opened'
-        number: 1
-        repository: fixtures.createRepository()
-        issue: fixtures.createIssue()
+      @raw.action = 'opened'
+      @raw.issue = fixtures.createIssue()
       @payload = parser(@raw)
 
     it 'assigns its creator\'s login to who', ->
@@ -37,11 +37,8 @@ describe 'Payload Parser', ->
 
   context 'which contain an issue which is a PR', ->
     beforeEach ->
-      @raw =
-        action: 'opened'
-        number: 1
-        repository: fixtures.createRepository()
-        issue: fixtures.createIssue()
+      @raw.action = 'opened'
+      @raw.issue = fixtures.createIssue()
       @raw.issue.pull_request = fixtures.createIssuePRExtension()
       @payload = parser(@raw)
 
