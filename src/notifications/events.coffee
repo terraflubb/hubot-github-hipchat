@@ -1,5 +1,7 @@
 payloadParser = require('./github_payload_parser.coffee')
-templates = require('dot').process(path: './views')
+dot = require('dot')
+dot.log = false
+templates = dot.process(path: './views')
 
 module.exports =
   pull_request:
