@@ -20,8 +20,11 @@ describe 'Payload Parser', ->
     it 'assigns its creator\'s login to who', ->
       expect(@payload.who).to.eql(@raw.pull_request.user.login)
 
-    it 'maps the pull_request to pr', ->
-      expect(@payload.pr).to.eql(@raw.pull_request)
+    it 'maps the pull request title to the pr property', ->
+      expect(@payload.pr.title).to.eql(@raw.pull_request.title)
+
+    it 'maps the pull request number to the pr property', ->
+      expect(@payload.pr.number).to.eql(@raw.pull_request.number)
 
   context 'which contain an issue', ->
     beforeEach ->
@@ -32,8 +35,11 @@ describe 'Payload Parser', ->
     it 'assigns its creator\'s login to who', ->
       expect(@payload.who).to.eql(@raw.issue.user.login)
 
-    it 'maps the issue to issue', ->
-      expect(@payload.issue).to.eql(@raw.issue)
+    it 'maps the issue number', ->
+      expect(@payload.issue.number).to.eql(@raw.issue.number)
+
+    it 'maps the issue title', ->
+      expect(@payload.issue.title).to.eql(@raw.issue.title)
 
   context 'which contain an issue which is a PR', ->
     beforeEach ->
@@ -47,6 +53,9 @@ describe 'Payload Parser', ->
 
     it 'includes the HTML URLs to the PR', ->
       expect(@payload.pr.url).to.eql(@raw.issue.pull_request.html_url)
+
+    it 'adds the issue title to the PR for convenience', ->
+      expect(@payload.pr.title).to.eql(@raw.issue.title)
 
     it 'adds the issue number to the PR for convenience', ->
       expect(@payload.pr.number).to.eql(@raw.issue.number)

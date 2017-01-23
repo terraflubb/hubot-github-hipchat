@@ -8,13 +8,16 @@ module.exports = (payload) ->
     parsed.who = payload.pull_request.user.login
 
   if payload.issue?
-    parsed.issue = payload.issue
     parsed.who = payload.issue.user.login
-    if parsed.issue.pull_request?
+
+    parsed.issue =
+      number: payload.issue.number
+      title: payload.issue.title
+
+    if payload.issue.pull_request?
       parsed.pr =
-        number: parsed.issue.number
-        url: parsed.issue.pull_request.html_url
-
-
+        title: payload.issue.title
+        number: payload.issue.number
+        url: payload.issue.pull_request.html_url
 
   parsed
