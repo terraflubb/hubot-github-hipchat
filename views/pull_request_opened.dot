@@ -1,0 +1,1 @@
+{{= it.repo }}: {{= it.user }} opened PR #{{= it.pr.number }}: "{{= it.pr.title }}"

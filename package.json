@@ -1,6 +1,6 @@
 {
-  "name": "hubot-steppingstone-gh-hubot",
-  "description": "Steppngstone's Hubot Script for GitHub ",
+  "name": "hubot-github-hipchat",
+  "description": "Steppingstone's Hubot Script for GitHub ",
   "version": "0.0.0",
   "author": "Steppingstone",
   "license": "MIT",
@@ -12,7 +12,9 @@
   "bugs": {
     "url": "https://github.com/hubot-scripts/hubot-steppingstone-gh-hubot/issues"
   },
-  "dependencies": {},
+  "dependencies": {
+    "dot": "^1.1.1"
+  },
   "peerDependencies": {
     "hubot": "2.x"
   },

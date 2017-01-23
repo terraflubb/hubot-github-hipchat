@@ -54,11 +54,14 @@ describe 'gh-notifier', ->
       done()
 
   it 'handles a "issue comment created" notification', (done) ->
-    request.post mockGithubRequest('issue_comment', 'created'), (res, req) =>
-      expect(@room.messages).to.eql(hubotResponse(
-        'nedap/science: terraflubb commented on issue #1'
-      ))
-      done()
+    request.post(
+      mockGithubRequest('issue_comment', 'created'),
+      (res, req) =>
+        expect(@room.messages).to.eql(hubotResponse(
+          'nedap/science: terraflubb commented on issue #1'
+        ))
+        done()
+    )
 
   it 'handles a "issue comment created" notification (for PR)', (done) ->
     payload = mockGithubRequest('issue_comment', 'created')

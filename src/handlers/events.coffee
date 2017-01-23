@@ -1,36 +1,54 @@
+templates = require('dot').process(path: './views')
+
 module.exports =
   pull_request:
     opened: (payload) ->
-      user = payload.pull_request.user.login
-      pr_number = payload.number
-      title = payload.pull_request.title
-      repo = payload.repository.full_name
+      data =
+        user: payload.pull_request.user.login
+        pr:
+          number: payload.number
+          title: payload.pull_request.title
+        repo: payload.repository.full_name
 
-      "#{repo}: #{user} opened PR ##{pr_number}: \"#{title}\""
+      templates.pull_request_opened(data)
 
     closed: (payload) ->
-      user = payload.pull_request.user.login
-      pr_number = payload.number
-      title = payload.pull_request.title
-      repo = payload.repository.full_name
-      verb = if payload.pull_request.merged then 'merged' else 'closed'
+      data =
+        user: payload.pull_request.user.login
+        pr:
+          number: payload.number
+          title: payload.pull_request.title
+        repo: payload.repository.full_name
 
-      "#{repo}: #{user} #{verb} PR ##{pr_number}."
+      if payload.pull_request.merged
+        templates.pull_request_merged(data)
+      else
+        templates.pull_request_closed(data)
 
   issues:
     opened: (payload) ->
-      user = payload.issue.user.login
-      number = payload.issue.number
-      title = payload.issue.title
-      repo = payload.repository.full_name
+      data =
+        user: payload.issue.user.login
+        issue:
+          number: payload.issue.number
+          title: payload.issue.title
+        repo: payload.repository.full_name
 
-      "#{repo}: #{user} created issue ##{number}: \"#{title}\""
+      templates.issues_opened(data)
 
   issue_comment:
     created: (payload) ->
-      user = payload.comment.user.login
-      number = payload.issue.number
-      repo = payload.repository.full_name
-      noun = if payload.issue.pull_request? then 'PR' else 'issue'
+      data =
+        user: payload.comment.user.login
+        pr:
+          number: payload.issue.number
+          title: payload.issue.title
+        issue:
+          number: payload.issue.number
+          title: payload.issue.title
+        repo: payload.repository.full_name
 
-      "#{repo}: #{user} commented on #{noun} ##{number}"
+      if payload.issue.pull_request?
+        templates.pull_request_commented(data)
+      else
+        templates.issue_comment_created(data)
