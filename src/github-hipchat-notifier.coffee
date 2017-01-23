@@ -30,7 +30,9 @@ module.exports = (robot) ->
 
 
 handleEvent = (eventType, payload) ->
-  return null if eventType is "ping"
+  # This eats 'pull' and 'ping' events so eventually
+  # we'll handle them better
+  return null unless payload.action? and eventType
 
   handler = eventHandlers[eventType][payload.action]
   return handler payload if handler?

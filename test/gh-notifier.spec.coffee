@@ -82,6 +82,14 @@ describe 'gh-notifier', ->
     },
       (res, req) ->
         done()
+
+  it 'can handle payloads without an action in the JSON', (done) ->
+    request.post(
+      mockGithubRequest('push', undefined),
+      (res, req) -> done()
+    )
+
+
 mockGithubRequest = (eventType, action) ->
   {
     method: 'POST',
@@ -138,5 +146,8 @@ getPayloadFor = (eventType, action) ->
       comment:
         user: fixtures.createUser()
     }
+  else
+    return { }
+
 
 hubotResponse = (expected) -> [[ BOT_NAME, expected ]]
