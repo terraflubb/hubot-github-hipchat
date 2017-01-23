@@ -16,7 +16,7 @@
 
 NOTIFICATION_ROOM = process.env.HUBOT_HIPCHAT_GITHUB_NOTIFICATION_ROOM or ''
 
-eventHandlers = require("./handlers/events.coffee")
+eventHandlers = require("./notifications/events.coffee")
 
 module.exports = (robot) ->
 

@@ -1,0 +1,13 @@
+{
+  "url": "https://api.github.com/repos/baxterthehacker/public-repo/pulls/1",
+  "id": 34778301,
+  "html_url": "https://github.com/baxterthehacker/public-repo/pull/1",
+  "diff_url": "https://github.com/baxterthehacker/public-repo/pull/1.diff",
+  "patch_url": "https://github.com/baxterthehacker/public-repo/pull/1.patch",
+  "issue_url": "https://api.github.com/repos/baxterthehacker/public-repo/issues/1",
+  "number": 111,
+  "state": "open",
+  "locked": false,
+  "title": "This is the title of the pull request",
+  "user": {}
+}

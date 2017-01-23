@@ -1,0 +1,11 @@
+{
+  "url": "https://api.github.com/repos/baxterthehacker/public-repo/issues/2",
+  "labels_url": "https://api.github.com/repos/baxterthehacker/public-repo/issues/2/labels{/name}",
+  "comments_url": "https://api.github.com/repos/baxterthehacker/public-repo/issues/2/comments",
+  "events_url": "https://api.github.com/repos/baxterthehacker/public-repo/issues/2/events",
+  "html_url": "https://github.com/baxterthehacker/public-repo/issues/2",
+  "id": 73464126,
+  "number": 222,
+  "title": "This is the title of the issue",
+  "user": {}
+}

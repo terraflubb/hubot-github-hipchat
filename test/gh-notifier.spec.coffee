@@ -19,7 +19,7 @@ describe 'gh-notifier', ->
   it 'handles a "pull request opened" notification', (done) ->
     request.post mockGithubRequest('pull_request', 'opened'), (res, req) =>
       expect(@room.messages).to.eql( hubotResponse(
-        'nedap/science: terraflubb opened PR #1: ' +
+        'nedap/science: terraflubb opened PR #111: ' +
         '"This is the title of the pull request"'
       ))
       done()
@@ -29,7 +29,7 @@ describe 'gh-notifier', ->
     payload.json.pull_request.merged = true
     request.post payload, (res, req) =>
       expect(@room.messages).to.eql(hubotResponse(
-        'nedap/science: terraflubb merged PR #1.'
+        'nedap/science: terraflubb merged PR #111.'
       ))
       done()
 
@@ -38,7 +38,7 @@ describe 'gh-notifier', ->
     payload.json.pull_request.merged = false
     request.post payload, (res, req) =>
       expect(@room.messages).to.eql(hubotResponse(
-        'nedap/science: terraflubb closed PR #1.'
+        'nedap/science: terraflubb closed PR #111.'
       ))
       done()
 
@@ -47,7 +47,7 @@ describe 'gh-notifier', ->
       expect(@room.messages).to.eql([
         [
           BOT_NAME
-          'nedap/science: terraflubb created issue #1: ' +
+          'nedap/science: terraflubb created issue #222: ' +
           '"This is the title of the issue"'
         ]
       ])
@@ -58,17 +58,17 @@ describe 'gh-notifier', ->
       mockGithubRequest('issue_comment', 'created'),
       (res, req) =>
         expect(@room.messages).to.eql(hubotResponse(
-          'nedap/science: terraflubb commented on issue #1'
+          'nedap/science: terraflubb commented on issue #222'
         ))
         done()
     )
 
   it 'handles a "issue comment created" notification (for PR)', (done) ->
     payload = mockGithubRequest('issue_comment', 'created')
-    payload.json.issue.pull_request = {lol: "bogus_pr!!!"}
+    payload.json.issue.pull_request = fixtures.createIssuePRExtension()
     request.post payload, (res, req) =>
       expect(@room.messages).to.eql(hubotResponse(
-        'nedap/science: terraflubb commented on PR #1'
+        'nedap/science: terraflubb commented on PR #222'
       ))
       done()
 
@@ -109,11 +109,7 @@ getPayloadFor = (eventType, action) ->
       action: 'opened'
       number: 1
       repository: fixtures.createRepository()
-      pull_request:
-        url: "https://api.github.com/repo/public-repo/pulls/1"
-        id: 34778301
-        title: "This is the title of the pull request"
-        user: fixtures.createUser()
+      pull_request: fixtures.createPR()
     }
 
   else if eventType == 'pull_request' and action == 'closed'
@@ -121,31 +117,19 @@ getPayloadFor = (eventType, action) ->
       action: 'closed'
       number: 1
       repository: fixtures.createRepository()
-      pull_request:
-        url: 'https://api.github.com/repo/public-repo/pulls/1'
-        id: 34778301
-        title: "This is the title of the pull request"
-        user: fixtures.createUser()
-        merged: true
+      pull_request: fixtures.createPR(merged: true)
     }
   else if eventType == 'issues' and action == 'opened'
     return {
       action: 'opened'
       repository: fixtures.createRepository()
-      issue:
-        number: 1
-        id: 34778301
-        title: 'This is the title of the issue'
-        user: fixtures.createUser()
+      issue: fixtures.createIssue()
     }
   else if eventType = 'issue_comment' and action == 'created'
     return {
       action: 'created'
       repository: fixtures.createRepository()
-      issue:
-        number: 1
-        id: 34778301
-        title: 'This is the title of the issue'
+      issue: fixtures.createIssue()
       comment:
         user: fixtures.createUser()
     }

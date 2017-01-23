@@ -1,1 +1,1 @@
-{{= it.repo }}: {{= it.user }} closed PR #{{= it.pr.number }}.
+{{= it.repo }}: {{= it.who }} closed PR #{{= it.pr.number }}.

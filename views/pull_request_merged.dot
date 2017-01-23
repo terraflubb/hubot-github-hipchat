@@ -1,1 +1,1 @@
-{{= it.repo }}: {{= it.user }} merged PR #{{= it.pr.number }}.
+{{= it.repo }}: {{= it.who }} merged PR #{{= it.pr.number }}.

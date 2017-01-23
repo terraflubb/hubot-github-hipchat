@@ -1,1 +1,1 @@
-{{= it.repo }}: {{= it.user }} created issue #{{= it.issue.number }}: "{{= it.issue.title }}"
+{{= it.repo }}: {{= it.who }} created issue #{{= it.issue.number }}: "{{= it.issue.title }}"
