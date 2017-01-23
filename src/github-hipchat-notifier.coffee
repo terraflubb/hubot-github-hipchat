@@ -19,7 +19,7 @@ NOTIFICATION_ROOM = process.env.HUBOT_HIPCHAT_GITHUB_NOTIFICATION_ROOM or ''
 dot = require('dot')
 dot.log = false
 
-mapEventToTemplate = require("./notifications/mapEventToTemplate.coffee")
+mapEventToTemplate = require("./notifications/map_event_to_template.coffee")
 payloadParser = require('./notifications/github_payload_parser.coffee')
 
 templates = dot.process(path: './views')
