@@ -72,6 +72,16 @@ describe 'gh-notifier', ->
       ))
       done()
 
+  it 'can deal with something legal but unexpected', (done) ->
+    request.post {
+      method: 'POST'
+      headers:
+        'X-GitHub-Event': 'watermelon'
+      uri: 'http://127.0.0.1:9999/hubot/github-events'
+      json:
+        action: 'squash'
+    }, done
+
   it 'can deal with a ping', (done) ->
     request.post {
       method: 'POST'
@@ -82,9 +92,7 @@ describe 'gh-notifier', ->
         zen: "banana"
         hook_id: 123
         hook: "lol"
-    },
-      (res, req) ->
-        done()
+    }, done
 
   it 'can handle payloads without an action in the JSON', (done) ->
     request.post(

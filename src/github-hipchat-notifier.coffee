@@ -27,11 +27,10 @@ templates = dot.process(path: './views')
 handleEvent = (eventType, payload) ->
   template_handle = mapEventToTemplate(eventType, payload)
 
-  return null if template_handle == 'noop' or not templates[template_handle]?
+  if template_handle == 'noop' or not templates[template_handle]
+    return null
 
-  template = templates[template_handle]
-
-  return template(payloadParser(payload)) if template?
+  templates[template_handle](payloadParser(payload))
 
 module.exports = (robot) ->
 
