@@ -1,23 +1,23 @@
 
-module.exports = (payload) ->
+module.exports = (raw) ->
   parsed =
-    repo: payload.repository.full_name
+    repo: raw.repository.full_name
 
-  if payload.pull_request?
-    parsed.pr = payload.pull_request
-    parsed.who = payload.pull_request.user.login
+  if raw.pull_request?
+    parsed.pr = raw.pull_request
+    parsed.who = raw.pull_request.user.login
 
-  if payload.issue?
-    parsed.who = payload.issue.user.login
+  if raw.issue?
+    parsed.who = raw.issue.user.login
 
     parsed.issue =
-      number: payload.issue.number
-      title: payload.issue.title
+      number: raw.issue.number
+      title: raw.issue.title
 
-    if payload.issue.pull_request?
+    if raw.issue.pull_request?
       parsed.pr =
-        title: payload.issue.title
-        number: payload.issue.number
-        url: payload.issue.pull_request.html_url
+        title: raw.issue.title
+        number: raw.issue.number
+        url: raw.issue.pull_request.html_url
 
   parsed
