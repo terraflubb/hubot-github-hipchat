@@ -1,4 +1,3 @@
-<a href="{{= it.repo.url }}">{{= it.repo.name }}</a>:
 <a href="{{= it.who.url }}">{{= it.who.name }}</a>
 commented on PR
 <a href="{{= it.pr.url }}">#{{= it.pr.number }}</a>

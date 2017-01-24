@@ -1,7 +1,7 @@
 request = require('request')
 
 module.exports =
-  send: (response) ->
+  send: (response, header = "") ->
     return if process.env.ENVIRONMENT == 'testing'
 
     room = process.env.HUBOT_HIPCHAT_GITHUB_NOTIFICATION_ROOM_API_ID
@@ -10,7 +10,7 @@ module.exports =
           "?auth_token=#{token}"
 
     body =
-          from: 'GitHub'
+          from: header || "GitHub"
           message: response
 
     request {method: 'POST', url: url, json: body}, (e, r, b) ->

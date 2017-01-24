@@ -23,19 +23,24 @@ mapEventToTemplate = require("./notifications/map_event_to_template.coffee")
 payloadParser = require('./notifications/github_payload_parser.coffee')
 hipchat = require('./notifications/notify_hipchat.coffee')
 
-renderResponse = (eventType, payload) ->
+findTemplate = (eventType, payload) ->
   template_handle = mapEventToTemplate.map(eventType, payload)
-
   if template_handle == 'noop' or not templates[template_handle]
     return null
 
-  templates[template_handle](payloadParser(payload))
+  templates[template_handle]
 
 module.exports = (robot) ->
   robot.router.post '/hubot/github-events', (req, res) ->
     payload = req.body
     eventType = req.headers["x-github-event"]
-    response = renderResponse(eventType, payload)
-    hipchat.send(response) if response
+
+    template = findTemplate(eventType, payload)
+
+    if template?
+      parsedPayload = payloadParser(payload)
+      response = template(parsedPayload)
+      header = parsedPayload.repo.name
+      hipchat.send(response, header)
 
     res.send 'OK'
