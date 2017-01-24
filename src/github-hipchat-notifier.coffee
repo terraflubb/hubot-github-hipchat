@@ -2,22 +2,18 @@
 #   Listens to github notifications and reports them
 #
 # Configuration:
-#   HUBOT_HIPCHAT_GITHUB_NOTIFICATION_ROOM (the room we announce to)
+#   HUBOT_HIPCHAT_GITHUB_NOTIFICATION_ROOM_API_ID (the room we announce to)
+#   HUBOT_HIPCHAT_GITHUB_HUBOT_API_TOKEN (auth for the user annoucing)
 #
 # Commands:
-#   hubot <trigger> - <what the respond trigger does>
-#   <trigger> - <what the hear trigger does>
+#    No commands, it just listens to /hubot/github-events on port 8080
 #
 # Notes:
-#   <optional notes required for the script>
+#   Make sure to set up the github hook to point at this
 #
 # Author:
 #   SteppingStone
 
-NOTIFICATION_ROOM = process.env.HUBOT_HIPCHAT_GITHUB_NOTIFICATION_ROOM or ''
-
-
-request = require('request')
 dot = require('dot')
 dot.templateSettings.strip = false
 dot.log = false
