@@ -2,4 +2,4 @@
 <a href="{{= it.who.url }}">{{= it.who.name }}</a>
 has closed issue
 <a href="{{= it.issue.url }}">#{{= it.issue.number }}</a>:
-"{{= it.issue.title }}"
+{{= it.issue.title }}
