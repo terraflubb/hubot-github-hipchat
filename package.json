@@ -13,7 +13,8 @@
     "url": "https://github.com/hubot-scripts/hubot-steppingstone-gh-hubot/issues"
   },
   "dependencies": {
-    "dot": "^1.1.1"
+    "dot": "^1.1.1",
+    "request": "^2.79.0"
   },
   "peerDependencies": {
     "hubot": "2.x"

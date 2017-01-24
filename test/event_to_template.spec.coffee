@@ -1,7 +1,7 @@
 chai = require 'chai'
 expect = chai.expect
 fixtures = require("./fixtures/github-request-fixtures.coffee")
-mapper = require("../src/notifications/map_event_to_template.coffee")
+mapper = require("../src/notifications/map_event_to_template.coffee").map
 
 describe "Event to template mapper", ->
 

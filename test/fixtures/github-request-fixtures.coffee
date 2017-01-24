@@ -15,6 +15,9 @@ createIssue = ->
   issue.user = createUser()
   return issue
 
+createComment = ->
+  require("./issue_comment.json")
+
 createIssuePRExtension = ->
   url: "https://api.github.com/repos/nedap/steppingstone-hubot/pulls/41"
   html_url: "https://github.com/nedap/steppingstone-hubot/pull/41"
@@ -27,3 +30,4 @@ module.exports =
   createPR: createPR
   createIssue: createIssue
   createIssuePRExtension: createIssuePRExtension
+  createComment: createComment

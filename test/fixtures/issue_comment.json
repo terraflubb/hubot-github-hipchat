@@ -1,0 +1,28 @@
+{
+  "url": "https://api.github.com/repos/nedap/steppingstone/issues/comments/274831495",
+  "html_url": "https://github.com/nedap/steppingstone/issues/484#issuecomment-274831495",
+  "issue_url": "https://api.github.com/repos/nedap/steppingstone/issues/484",
+  "id": 274831495,
+  "user": {
+    "login": "flubbaterr",
+    "id": 1361801,
+    "avatar_url": "https://avatars.githubusercontent.com/u/1361801?v=3",
+    "gravatar_id": "",
+    "url": "https://api.github.com/users/flubbaterr",
+    "html_url": "https://github.com/flubbaterr",
+    "followers_url": "https://api.github.com/users/flubbaterr/followers",
+    "following_url": "https://api.github.com/users/flubbaterr/following{/other_user}",
+    "gists_url": "https://api.github.com/users/flubbaterr/gists{/gist_id}",
+    "starred_url": "https://api.github.com/users/flubbaterr/starred{/owner}{/repo}",
+    "subscriptions_url": "https://api.github.com/users/flubbaterr/subscriptions",
+    "organizations_url": "https://api.github.com/users/flubbaterr/orgs",
+    "repos_url": "https://api.github.com/users/flubbaterr/repos",
+    "events_url": "https://api.github.com/users/flubbaterr/events{/privacy}",
+    "received_events_url": "https://api.github.com/users/flubbaterr/received_events",
+    "type": "User",
+    "site_admin": false
+  },
+  "created_at": "2017-01-24T15:12:31Z",
+  "updated_at": "2017-01-24T15:12:31Z",
+  "body": "Just doing a thing"
+}

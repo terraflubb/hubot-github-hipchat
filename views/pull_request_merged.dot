@@ -1,1 +1,2 @@
-{{= it.repo }}: {{= it.who }} merged PR #{{= it.pr.number }}.
+<a href="{{= it.repo.url }}">{{= it.repo.name }}</a>:
+{{= it.who }} merged PR #{{= it.pr.number }}.

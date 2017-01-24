@@ -1,75 +1,77 @@
+request = require 'request'
+
+sinon = require 'sinon'
 chai = require 'chai'
+sinonChai = require 'sinon-chai'
+Helper = require 'hubot-test-helper'
+
+fixtures = require './fixtures/github-request-fixtures.coffee'
+
 expect = chai.expect
-Helper = require('hubot-test-helper')
+chai.use sinonChai
+
 helper = new Helper('../src/github-hipchat-notifier.coffee')
-request = require('request')
-fixtures = require("./fixtures/github-request-fixtures.coffee")
 
 process.env.EXPRESS_PORT = 9999
-BOT_NAME = 'hubot'
+process.env.ENVIRONMENT = 'testing'
+
+hipchat = require('../src/notifications/notify_hipchat.coffee')
+mapper = require('../src/notifications/map_event_to_template.coffee')
 
 describe 'gh-notifier', ->
+
+  before ->
+    @hipchatCallStub = sinon.stub(hipchat, 'send')
+    @mapperSpy = sinon.spy(mapper, 'map')
 
   beforeEach ->
     @room = helper.createRoom()
 
   afterEach ->
     @room.destroy()
+    @mapperSpy.reset()
+    @hipchatCallStub.reset()
 
   it 'handles a "pull request opened" notification', (done) ->
     request.post mockGithubRequest('pull_request', 'opened'), (res, req) =>
-      expect(@room.messages).to.eql( hubotResponse(
-        'nedap/science: terraflubb opened PR #111: ' +
-        '"This is the title of the pull request"'
-      ))
+      expect(@hipchatCallStub).to.have.callCount 1
+      expect(@mapperSpy).to.have.always.returned 'pull_request_opened'
       done()
 
   it 'handles a "pull request closed (merged)" notification', (done) ->
     payload = mockGithubRequest('pull_request', 'closed')
     payload.json.pull_request.merged = true
     request.post payload, (res, req) =>
-      expect(@room.messages).to.eql(hubotResponse(
-        'nedap/science: terraflubb merged PR #111.'
-      ))
+      expect(@hipchatCallStub).to.have.callCount 1
+      expect(@mapperSpy).to.have.always.returned 'pull_request_merged'
       done()
 
   it 'handles a "pull request closed (unmerged)" notification', (done) ->
     payload = mockGithubRequest('pull_request', 'closed')
     payload.json.pull_request.merged = false
     request.post payload, (res, req) =>
-      expect(@room.messages).to.eql(hubotResponse(
-        'nedap/science: terraflubb closed PR #111.'
-      ))
+      expect(@hipchatCallStub).to.have.callCount 1
+      expect(@mapperSpy).to.have.always.returned 'pull_request_closed'
       done()
 
   it 'handles a "issue opened" notification', (done) ->
-    request.post mockGithubRequest('issues', 'opened'), (res, req) =>
-      expect(@room.messages).to.eql([
-        [
-          BOT_NAME
-          'nedap/science: terraflubb created issue #222: ' +
-          '"This is the title of the issue"'
-        ]
-      ])
+    request.post mockGithubRequest('issues', 'opened'), =>
+      expect(@hipchatCallStub).to.have.callCount 1
+      expect(@mapperSpy).to.have.always.returned 'issues_opened'
       done()
 
   it 'handles a "issue comment created" notification', (done) ->
-    request.post(
-      mockGithubRequest('issue_comment', 'created'),
-      (res, req) =>
-        expect(@room.messages).to.eql(hubotResponse(
-          'nedap/science: terraflubb commented on issue #222'
-        ))
-        done()
-    )
+    request.post mockGithubRequest('issue_comment', 'created'), =>
+      expect(@hipchatCallStub).to.have.callCount 1
+      expect(@mapperSpy).to.have.always.returned 'issue_comment_created'
+      done()
 
   it 'handles a "issue comment created" notification (for PR)', (done) ->
     payload = mockGithubRequest('issue_comment', 'created')
     payload.json.issue.pull_request = fixtures.createIssuePRExtension()
-    request.post payload, (res, req) =>
-      expect(@room.messages).to.eql(hubotResponse(
-        'nedap/science: terraflubb commented on PR #222'
-      ))
+    request.post payload, =>
+      expect(@hipchatCallStub).to.have.callCount 1
+      expect(@mapperSpy).to.have.always.returned 'pull_request_commented'
       done()
 
   it 'can deal with something legal but unexpected', (done) ->
@@ -80,7 +82,9 @@ describe 'gh-notifier', ->
       uri: 'http://127.0.0.1:9999/hubot/github-events'
       json:
         action: 'squash'
-    }, done
+    }, =>
+      expect(@hipchatCallStub.callCount).to.equal 0
+      done()
 
   it 'can deal with a ping', (done) ->
     request.post {
@@ -92,13 +96,14 @@ describe 'gh-notifier', ->
         zen: "banana"
         hook_id: 123
         hook: "lol"
-    }, done
+    }, =>
+      expect(@hipchatCallStub.callCount).to.equal 0
+      done()
 
   it 'can handle payloads without an action in the JSON', (done) ->
-    request.post(
-      mockGithubRequest('push', undefined),
-      (res, req) -> done()
-    )
+    request.post mockGithubRequest('push', undefined), =>
+      expect(@hipchatCallStub.callCount).to.equal 0
+      done()
 
 
 mockGithubRequest = (eventType, action) ->
@@ -144,5 +149,3 @@ getPayloadFor = (eventType, action) ->
   else
     return { }
 
-
-hubotResponse = (expected) -> [[ BOT_NAME, expected ]]

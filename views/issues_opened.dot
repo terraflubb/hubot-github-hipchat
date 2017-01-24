@@ -1,1 +1,3 @@
-{{= it.repo }}: {{= it.who }} created issue #{{= it.issue.number }}: "{{= it.issue.title }}"
+<a href="{{= it.repo.url }}">{{= it.repo.name }}</a>:
+<a href="{{= it.who.url }}">{{= it.who.name }}</a>
+created issue <a href="{{= it.issue.url }}">#{{= it.issue.number }}</a>: "{{= it.issue.title }}"
