@@ -1,16 +1,16 @@
 {
   "name": "hubot-github-hipchat",
-  "description": "Steppingstone's Hubot Script for GitHub ",
-  "version": "0.0.0",
-  "author": "Steppingstone",
-  "license": "MIT",
+  "description": "A Hubot-on-hipchat Script for GitHub",
+  "version": "0.1.0",
+  "author": "Rob Fletcher",
+  "license": "BSD",
   "keywords": "hubot, hubot-scripts",
   "repository": {
     "type": "git",
-    "url": "git://github.com/hubot-scripts/hubot-steppingstone-gh-hubot.git"
+    "url": "git://github.com/terraflubb/hubot-github-hipchat.git"
   },
   "bugs": {
-    "url": "https://github.com/hubot-scripts/hubot-steppingstone-gh-hubot/issues"
+    "url": "https://github.com/terraflubb/hubot-github-hipchat/issues"
   },
   "dependencies": {
     "dot": "^1.1.1",
