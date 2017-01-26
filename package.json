@@ -1,7 +1,7 @@
 {
   "name": "hubot-github-hipchat",
   "description": "A Hubot-on-hipchat Script for GitHub",
-  "version": "0.1.0",
+  "version": "0.1.3",
   "author": "Rob Fletcher",
   "license": "BSD",
   "keywords": "hubot, hubot-scripts",
