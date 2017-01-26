@@ -5,27 +5,29 @@ parser = require("../src/notifications/github_payload_parser.coffee")
 
 describe 'Payload Parser', ->
   beforeEach ->
-    @raw = repository: fixtures.createRepository()
+    @raw = fixtures.stub()
 
   it "should map the repository name to a handy accessor", ->
     payload = parser(@raw)
     expect(payload.repo.name).to.eql(@raw.repository.full_name)
 
-  it "should map the repository name to a handy accessor", ->
+  it "should map the repository url to a handy accessor", ->
     payload = parser(@raw)
     expect(payload.repo.url).to.eql(@raw.repository.html_url)
+
+  it 'assigns the sender login to who', ->
+    payload = parser(@raw)
+    expect(payload.who.name).to.eql(@raw.sender.login)
+
+  it 'assigns the sender url to who', ->
+    payload = parser(@raw)
+    expect(payload.who.url).to.eql(@raw.sender.html_url)
 
   context 'which contain a pull request', ->
     beforeEach ->
       @raw.action = 'opened'
       @raw.pull_request = fixtures.createPR()
       @payload = parser(@raw)
-
-    it 'assigns its creator\'s login to who', ->
-      expect(@payload.who.name).to.eql(@raw.pull_request.user.login)
-
-    it 'assigns its creator\'s URL to who_url', ->
-      expect(@payload.who.url).to.eql(@raw.pull_request.user.html_url)
 
     it 'maps the pull request title to the pr property', ->
       expect(@payload.pr.title).to.eql(@raw.pull_request.title)
@@ -39,30 +41,11 @@ describe 'Payload Parser', ->
       @raw.issue = fixtures.createIssue()
       @payload = parser(@raw)
 
-    it 'assigns its creator\'s login to who', ->
-      expect(@payload.who.name).to.eql(@raw.issue.user.login)
-
-    it 'assigns its creator\'s URL to who_url', ->
-      expect(@payload.who.url).to.eql(@raw.issue.user.html_url)
-
     it 'maps the issue number', ->
       expect(@payload.issue.number).to.eql(@raw.issue.number)
 
     it 'maps the issue title', ->
       expect(@payload.issue.title).to.eql(@raw.issue.title)
-
-  context 'which contain a comment and an issue', ->
-    beforeEach ->
-      @raw.action = 'created'
-      @raw.issue = fixtures.createIssue()
-      @raw.comment = fixtures.createComment()
-      @raw.issue.pull_request = fixtures.createIssuePRExtension()
-      @payload = parser(@raw)
-
-    it 'uses the comment author as the who', ->
-      expect(@payload.who.name).to.eql(@raw.comment.user.login)
-      expect(@payload.who.url).to.eql(@raw.comment.user.html_url)
-
 
   context 'which contain an issue which is a PR', ->
     beforeEach ->
@@ -76,9 +59,6 @@ describe 'Payload Parser', ->
 
     it 'includes the HTML URLs to the PR', ->
       expect(@payload.pr.url).to.eql(@raw.issue.pull_request.html_url)
-
-    it 'assigns its creator\'s URL to who_url', ->
-      expect(@payload.who.url).to.eql(@raw.issue.user.html_url)
 
     it 'adds the issue title to the PR for convenience', ->
       expect(@payload.pr.title).to.eql(@raw.issue.title)

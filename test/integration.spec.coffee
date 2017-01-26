@@ -117,12 +117,14 @@ mockGithubRequest = (eventType, action) ->
   }
 
 getPayloadFor = (eventType, action) ->
+
   if eventType == 'pull_request' and action == 'opened'
     return {
       action: 'opened'
       number: 1
       repository: fixtures.createRepository()
       pull_request: fixtures.createPR()
+      sender: fixtures.createUser()
     }
 
   else if eventType == 'pull_request' and action == 'closed'
@@ -131,12 +133,14 @@ getPayloadFor = (eventType, action) ->
       number: 1
       repository: fixtures.createRepository()
       pull_request: fixtures.createPR(merged: true)
+      sender: fixtures.createUser()
     }
   else if eventType == 'issues' and action == 'opened'
     return {
       action: 'opened'
       repository: fixtures.createRepository()
       issue: fixtures.createIssue()
+      sender: fixtures.createUser()
     }
   else if eventType = 'issue_comment' and action == 'created'
     return {
@@ -145,6 +149,7 @@ getPayloadFor = (eventType, action) ->
       issue: fixtures.createIssue()
       comment:
         user: fixtures.createUser()
+      sender: fixtures.createUser()
     }
   else
     return { }

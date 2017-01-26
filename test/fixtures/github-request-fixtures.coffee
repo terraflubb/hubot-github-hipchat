@@ -24,7 +24,17 @@ createIssuePRExtension = ->
   diff_url: "https://github.com/nedap/steppingstone-hubot/pull/41.diff"
   patch_url: "https://github.com/nedap/steppingstone-hubot/pull/41.patch"
 
+stub = ->
+  toReturn =
+    repository: createRepository()
+    sender: createUser()
+  toReturn.sender.login = 'senderflubb'
+  toReturn.sender.login = 'http://github.com/senderflubb'
+  toReturn
+
+
 module.exports =
+  stub: stub
   createUser: createUser
   createRepository: createRepository
   createPR: createPR
