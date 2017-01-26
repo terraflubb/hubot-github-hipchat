@@ -1,4 +1,1 @@
-<a href="{{= it.who.url }}">{{= it.who.name }}</a>
-commented on issue
-<a href="{{= it.issue.url }}">#{{= it.issue.number }}</a>:
-{{= it.issue.title }}
+<a href="{{= it.who.url }}">{{= it.who.name }}</a> commented on issue <a href="{{= it.issue.url }}">#{{= it.issue.number }}</a>: {{= it.issue.title }}
