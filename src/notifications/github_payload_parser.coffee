@@ -7,6 +7,21 @@ module.exports = (raw) ->
       name: raw.sender.login
       url: raw.sender.html_url
 
+  if raw.pusher?
+    commit_count = raw.commits.length
+    commit_text = "#{commit_count} commit"
+    if (commit_count > 1)
+      commit_text += 's'
+
+    # chop off the leading 'refs/heads/'
+    branch = raw.ref.substring(11)
+
+    parsed.push =
+      commits: commit_count
+      commit_text: commit_text
+      url: raw.compare
+      branch: branch
+
   if raw.pull_request?
     parsed.pr =
         title: raw.pull_request.title

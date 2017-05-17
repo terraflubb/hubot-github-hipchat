@@ -23,6 +23,26 @@ describe 'Payload Parser', ->
     payload = parser(@raw)
     expect(payload.who.url).to.eql(@raw.sender.html_url)
 
+  context 'which contain a push', ->
+    beforeEach ->
+      @raw.action = null
+      @raw.created = true
+      @raw.deleted = false
+      @raw.pusher = {"login": "rob"}
+      @raw.commits = [1, 2, 3]
+      @raw.compare = "https://github.com/nedap/banana/compare/123:1234"
+      @raw.ref = "refs/heads/pamplemousse"
+      @payload = parser(@raw)
+
+    it 'gives handy text for how many commits', ->
+      expect(@payload.push.commit_text).to.eql('3 commits')
+
+    it 'maps the ref to a branch name', ->
+      expect(@payload.push.branch).to.eql('pamplemousse')
+
+    it 'maps the compare URL to the url', ->
+      expect(@payload.push.url).to.eql(@raw.compare)
+
   context 'which contain a pull request', ->
     beforeEach ->
       @raw.action = 'opened'

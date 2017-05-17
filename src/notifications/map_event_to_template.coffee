@@ -1,7 +1,13 @@
 module.exports =
   map: (eventType, payload) ->
-    if eventType == 'ping' or eventType == 'push'
+    if eventType == 'ping'
       return 'noop'
+
+    if eventType == 'push'
+      if payload.created
+        return "push"
+      else
+        return "noop"
 
     if eventType == 'issue_comment' and payload.action == 'created' and
         payload.issue.pull_request?

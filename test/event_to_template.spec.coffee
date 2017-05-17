@@ -9,9 +9,13 @@ describe "Event to template mapper", ->
     mapped = mapper('ping')
     expect(mapped).to.eql('noop')
 
-  it 'should map "push"  to noop', ->
-    mapped = mapper('push')
+  it 'should map "push" to noop if it is not a create', ->
+    mapped = mapper('push', {created: false})
     expect(mapped).to.eql('noop')
+
+  it 'should map "push" to "push" if it is not a delete', ->
+    mapped = mapper('push', {created: true})
+    expect(mapped).to.eql('push')
 
   it 'normally maps to "object_type" underscore "payload.action"', ->
     object_type = "banana_apple"
