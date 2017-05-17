@@ -8,7 +8,10 @@ module.exports = (raw) ->
       url: raw.sender.html_url
 
   if raw.pull_request?
-    parsed.pr = raw.pull_request
+    parsed.pr =
+        title: raw.pull_request.title
+        number: raw.pull_request.number
+        url: raw.pull_request.html_url
 
   if raw.issue?
     parsed.issue =
